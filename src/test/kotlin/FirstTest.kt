@@ -12,13 +12,18 @@ import org.openqa.selenium.support.ui.WebDriverWait
 import org.testng.Assert
 import java.lang.Thread.sleep
 import java.math.BigDecimal
+import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 class FirstTest {
-
+//    System.setProperty("webdriver.chrome.driver", "C:\\Git\\SeleniumGradle\\src\\main\\kotlin\\drivers\\chromedriver.exe")
+//    val driver: WebDriver = ChromeDriver()
+//    fun avaitor(selector: String){
+//        await().atMost(20, TimeUnit.SECONDS).until(driver.findElement(By.className(selector))::isDisplayed)
+//    }
 
 
     @Test
@@ -43,7 +48,7 @@ class FirstTest {
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.className("top-menu")))
                 var element = driver.findElement(By.className("top-menu"))
                 element.findElement(By.partialLinkText(categoryName[mainCounter])).click()
-                await().until(ExpectedConditions.presenceOfElementLocated(By.className("category-grid")))
+                await().atMost(20, TimeUnit.SECONDS).until(driver.findElement(By.className("category-grid"))::isDisplayed)
 //                wait.until(ExpectedConditions.presenceOfElementLocated(By.className("category-grid")))
                 element = driver.findElement(By.className("category-grid"))
                 var counter = 0
@@ -155,17 +160,23 @@ class FirstTest {
 
     @Test
     fun fifthTest() {
+
         System.setProperty("webdriver.chrome.driver", "C:\\Git\\SeleniumGradle\\src\\main\\kotlin\\drivers\\chromedriver.exe")
         val driver: WebDriver = ChromeDriver()
         driver.manage().window().size = Dimension(1280, 720)
         val wait = WebDriverWait(driver, 5000)
         val HTC:String = "HTC One Mini Blue"
+        fun avaitor(selector: String){
+            await().atMost(20, TimeUnit.SECONDS).until(driver.findElement(By.className(selector))::isDisplayed)
+        }
 
         driver.get("https://demo.nopcommerce.com/cell-phones")
         driver.findElement(By.partialLinkText(HTC)).click()
-        Thread.sleep(3000);
+        avaitor("product-title")
+//        Thread.sleep(3000);
         driver.get("https://demo.nopcommerce.com/cell-phones")
-        Thread.sleep(3000);
+        avaitor("block-recently-viewed-products")
+//        Thread.sleep(3000);
         val product = driver.findElement(By.className("block-recently-viewed-products"))
         val viewedProduct = product.findElement(By.partialLinkText(HTC)).getText()
         Assert.assertEquals(viewedProduct, HTC)
