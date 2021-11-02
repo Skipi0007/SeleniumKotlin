@@ -1,20 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="FirstTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-01T15:46:13" hostname="DESKTOP-TO01JMV" time="13.98">
+<testsuite name="FirstTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2021-11-02T07:03:54" hostname="DESKTOP-TO01JMV" time="75.458">
   <properties/>
-  <testcase name="fourthTest()" classname="FirstTest" time="13.98"/>
-  <system-out><![CDATA[345.00
-{345.00} eq {345.00}
+  <testcase name="fifthTest()" classname="FirstTest" time="18.167"/>
+  <testcase name="thirdTest()" classname="FirstTest" time="14.565"/>
+  <testcase name="firstTest()" classname="FirstTest" time="13.074"/>
+  <testcase name="secondTest()" classname="FirstTest" time="16.222"/>
+  <testcase name="fourthTest()" classname="FirstTest" time="13.43"/>
+  <system-out><![CDATA[Please select RAM eq Please select RAM
+Please select HDD eq Please select HDD
+Desktops eq Desktops
+Notebooks eq Notebooks
+Software eq Software
+Camera & photo eq Camera & photo
+Cell phones eq Cell phones
+Others eq Others
+Shoes eq Shoes
+Clothing eq Clothing
+Accessories eq Accessories
+HTC One Mini Blue eq HTC One Mini Blue
+345.00 eq 345.00
 ]]></system-out>
   <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-Starting ChromeDriver 95.0.4638.17 (a9d0719444d4b035e284ed1fce73bf6ccd789df2-refs/branch-heads/4638@{#178}) on port 64295
+Starting ChromeDriver 95.0.4638.17 (a9d0719444d4b035e284ed1fce73bf6ccd789df2-refs/branch-heads/4638@{#178}) on port 62098
 Only local connections are allowed.
 Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
 ChromeDriver was started successfully.
-нояб. 01, 2021 6:46:15 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+нояб. 02, 2021 10:03:56 AM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: W3C
-нояб. 01, 2021 6:46:15 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+нояб. 02, 2021 10:03:56 AM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+INFO: Found exact CDP implementation for version 95
+Starting ChromeDriver 95.0.4638.17 (a9d0719444d4b035e284ed1fce73bf6ccd789df2-refs/branch-heads/4638@{#178}) on port 65501
+Only local connections are allowed.
+Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+ChromeDriver was started successfully.
+нояб. 02, 2021 10:04:13 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+нояб. 02, 2021 10:04:13 AM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+INFO: Found exact CDP implementation for version 95
+Starting ChromeDriver 95.0.4638.17 (a9d0719444d4b035e284ed1fce73bf6ccd789df2-refs/branch-heads/4638@{#178}) on port 52386
+Only local connections are allowed.
+Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+ChromeDriver was started successfully.
+нояб. 02, 2021 10:04:27 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+нояб. 02, 2021 10:04:27 AM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+INFO: Found exact CDP implementation for version 95
+Starting ChromeDriver 95.0.4638.17 (a9d0719444d4b035e284ed1fce73bf6ccd789df2-refs/branch-heads/4638@{#178}) on port 60060
+Only local connections are allowed.
+Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+ChromeDriver was started successfully.
+нояб. 02, 2021 10:04:42 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+нояб. 02, 2021 10:04:42 AM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+INFO: Found exact CDP implementation for version 95
+Starting ChromeDriver 95.0.4638.17 (a9d0719444d4b035e284ed1fce73bf6ccd789df2-refs/branch-heads/4638@{#178}) on port 55793
+Only local connections are allowed.
+Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+ChromeDriver was started successfully.
+нояб. 02, 2021 10:04:56 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+нояб. 02, 2021 10:04:56 AM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
 INFO: Found exact CDP implementation for version 95
 ]]></system-err>
 </testsuite>

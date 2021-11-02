@@ -1,3 +1,4 @@
+import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
 import org.openqa.selenium.By
@@ -26,7 +27,6 @@ class FirstTest {
         val driver: WebDriver = ChromeDriver()
         driver.manage().window().size = Dimension(1280, 720)
         val category: Array<String> = arrayOf("Computers", "Electronics", "Apparel")
-//        , "Digital downloads", "Books", "Jewelry", "Gift Cards"
 
         val subCatComputers: Array<String> = arrayOf("Desktops",  "Notebooks", "Software")
         val subCatElectronics: Array<String> = arrayOf("Camera & photo",  "Cell phones", "Others")
@@ -43,7 +43,8 @@ class FirstTest {
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.className("top-menu")))
                 var element = driver.findElement(By.className("top-menu"))
                 element.findElement(By.partialLinkText(categoryName[mainCounter])).click()
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.className("category-grid")))
+                await().until(ExpectedConditions.presenceOfElementLocated(By.className("category-grid")))
+//                wait.until(ExpectedConditions.presenceOfElementLocated(By.className("category-grid")))
                 element = driver.findElement(By.className("category-grid"))
                 var counter = 0
 
@@ -70,20 +71,14 @@ class FirstTest {
 
         driver.get("https://demo.nopcommerce.com/cell-phones")
         Thread.sleep(1000);
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText(HTC)))
+
         var product = driver.findElement(By.partialLinkText(HTC))
         product = product.findElement(By.ByXPath("./../.."))
         product.findElement(By.className("product-box-add-to-cart-button")).click()
         Thread.sleep(3000);
-//        var notify = driver.findElement(By.className("content"))
-//        wait.until(ExpectedConditions.textToBePresentInElement(notify, "The product has been added to your "))
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bar-notification success")))
 
         driver.get("https://demo.nopcommerce.com/cart")
         Thread.sleep(1000);
-//        "The product has been added to your" content
-//                textToBePresentInElement
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("product-name")))
         val cartProduct = driver.findElement(By.className("product-name")).getText()
         Assert.assertEquals(cartProduct, "HTC One Mini Blue")
         System.out.println(cartProduct+" eq HTC One Mini Blue")
@@ -127,31 +122,32 @@ class FirstTest {
         val secondHTC:String = "HTC One M8 Android L 5.0 Lollipop"
         var sumTotal:BigDecimal? = null
 
+        fun preiceCollectror(selector: String, price:BigDecimal?): BigDecimal {
+            var product = driver.findElement(By.partialLinkText(selector))
+            product = product.findElement(By.ByXPath("./../.."))
+            var productPrice = product.findElement(By.className("actual-price")).getText().split("$")
+            var productPriceInt = productPrice[1].toBigDecimal()
+            product.findElement(By.className("product-box-add-to-cart-button")).click()
+            Thread.sleep(3000);
+
+            if(price == null){
+                return productPriceInt
+            } else {
+                return(price+productPriceInt)
+            }
+        }
+
         driver.get("https://demo.nopcommerce.com/cell-phones")
         Thread.sleep(1000);
-        var product = driver.findElement(By.partialLinkText(HTC))
-        product = product.findElement(By.ByXPath("./../.."))
-        var productPrice = product.findElement(By.className("actual-price")).getText().split("$")
-        var productPriceInt = productPrice[1].toBigDecimal()
-        sumTotal=productPriceInt
-        product.findElement(By.className("product-box-add-to-cart-button")).click()
-        Thread.sleep(3000);
-        product = driver.findElement(By.partialLinkText(secondHTC))
-        product = product.findElement(By.ByXPath("./../.."))
-        productPrice = product.findElement(By.className("actual-price")).getText().split("$")
-
-        productPriceInt = productPrice[1].toBigDecimal()
-        sumTotal=sumTotal+productPriceInt
-        product.findElement(By.className("product-box-add-to-cart-button")).click()
-        Thread.sleep(3000);
-        System.out.println(sumTotal)
+        sumTotal=preiceCollectror(HTC, sumTotal)
+        sumTotal=preiceCollectror(secondHTC, sumTotal)
 
         driver.get("https://demo.nopcommerce.com/cart")
         Thread.sleep(1000);
         var webSumm = driver.findElement(By.className("value-summary")).getText().split("$")
         var webSummInt = webSumm[1].toBigDecimal()
         Assert.assertEquals(webSummInt, sumTotal)
-        System.out.println("{$webSummInt} eq {$sumTotal}")
+        System.out.println("$webSummInt eq $sumTotal")
 
 
         driver.quit()
