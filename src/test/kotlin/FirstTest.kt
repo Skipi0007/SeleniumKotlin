@@ -1,4 +1,5 @@
 import org.awaitility.Awaitility.await
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
 import org.openqa.selenium.By
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait
 import org.testng.Assert
 import java.lang.Thread.sleep
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -19,13 +21,12 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 class FirstTest {
-//    System.setProperty("webdriver.chrome.driver", "C:\\Git\\SeleniumGradle\\src\\main\\kotlin\\drivers\\chromedriver.exe")
-//    val driver: WebDriver = ChromeDriver()
+
     fun avaitor(driver:WebDriver = ChromeDriver(), selector: String){
         await().atMost(50, TimeUnit.SECONDS).until(driver.findElement(By.className(selector))::isDisplayed)
     }
     fun awaitWithText(driver:WebDriver = ChromeDriver(), selector: String){
-        await().atMost(20, TimeUnit.SECONDS).until(driver.findElement(By.partialLinkText(selector))::isDisplayed)
+        await().atMost(90, TimeUnit.SECONDS).until(driver.findElement(By.partialLinkText(selector))::isDisplayed)
     }
 
 
@@ -52,8 +53,7 @@ class FirstTest {
                 var element = driver.findElement(By.className("top-menu"))
                 element.findElement(By.partialLinkText(categoryName[mainCounter])).click()
                 avaitor(driver, "category-grid")
-//                await().atMost(20, TimeUnit.SECONDS).until(driver.findElement(By.className("category-grid"))::isDisplayed)
-//                wait.until(ExpectedConditions.presenceOfElementLocated(By.className("category-grid")))
+
                 element = driver.findElement(By.className("category-grid"))
                 var counter = 0
 
@@ -79,16 +79,13 @@ class FirstTest {
         val HTC:String = "HTC One Mini Blue"
 
         driver.get("https://demo.nopcommerce.com/cell-phones")
-//        Thread.sleep(1000);
         awaitWithText(driver, HTC)
         var product = driver.findElement(By.partialLinkText(HTC))
         product = product.findElement(By.ByXPath("./../.."))
         product.findElement(By.className("product-box-add-to-cart-button")).click()
         avaitor(driver, "bar-notification-container")
-//        Thread.sleep(3000);
 
         driver.get("https://demo.nopcommerce.com/cart")
-        Thread.sleep(1000);
         avaitor(driver, "product-name")
         val cartProduct = driver.findElement(By.className("product-name")).getText()
         Assert.assertEquals(cartProduct, "HTC One Mini Blue")
@@ -107,17 +104,12 @@ class FirstTest {
 
         driver.get("https://demo.nopcommerce.com/desktops")
         avaitor(driver, "products-wrapper")
-//        Thread.sleep(1000);
         var product = driver.findElement(By.partialLinkText(PC))
         product = product.findElement(By.ByXPath("./../.."))
         product.findElement(By.className("product-box-add-to-cart-button")).click()
-//        avaitor(driver, "overview")
-//        awaitWithText(driver, errorsTexts[0])
         Thread.sleep(5000);
         driver.findElement(By.id("add-to-cart-button-1")).click()
         avaitor(driver, "bar-notification-container")
-//        awaitWithText(driver, errorsTexts[1])
-//        Thread.sleep(3000);
         var notify = driver.findElement(By.className("bar-notification"))
         val firstTextError = notify.findElement(By.ByXPath(".//p[1]")).getText()
         val secondTextError = notify.findElement(By.ByXPath(".//p[2]")).getText()
@@ -147,7 +139,6 @@ class FirstTest {
             avaitor(driver, "bar-notification-container")
             product = driver.findElement(By.className("bar-notification"))
             product.findElement(By.className("close")).click()
-//            Thread.sleep(3000);
 
             if(price == null){
                 return productPriceInt
@@ -157,20 +148,32 @@ class FirstTest {
         }
 
         driver.get("https://demo.nopcommerce.com/cell-phones")
-//        Thread.sleep(1000);
         avaitor(driver, "products-wrapper")
         sumTotal=preiceCollectror(HTC, sumTotal)
         sumTotal=preiceCollectror(secondHTC, sumTotal)
 
         driver.get("https://demo.nopcommerce.com/cart")
+        driver.findElement(By.partialLinkText(HTC)).isDisplayed
+        driver.findElement(By.partialLinkText(secondHTC)).isDisplayed
         avaitor(driver, "value-summary")
-//        Thread.sleep(1000);
         var webSumm = driver.findElement(By.className("value-summary")).getText().split("$")
         var webSummInt = webSumm[1].toBigDecimal()
         Assert.assertEquals(webSummInt, sumTotal)
         System.out.println("$webSummInt eq $sumTotal")
+        var dropDown:WebElement = driver.findElement(By.id("customerCurrency"))
+        dropDown.click()
+        await().atMost(50, TimeUnit.SECONDS).until(dropDown.findElement(By.ByXPath("""./option[2]"""))::isDisplayed)
 
+        dropDown.findElement(By.ByXPath("""./option[2]""")).click()
 
+        sumTotal*=0.86.toBigDecimal()
+        sumTotal=sumTotal.multiply(BigDecimal(1)).setScale(2, RoundingMode.HALF_UP)
+        sleep(3000);
+
+        webSumm = driver.findElement(By.className("value-summary")).getText().split("€")
+        webSummInt = webSumm[1].toBigDecimal()
+        Assert.assertEquals(webSummInt, sumTotal)
+        System.out.println("$webSummInt eq $sumTotal")
         driver.quit()
     }
 
