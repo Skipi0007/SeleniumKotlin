@@ -205,7 +205,7 @@ class FirstTest {
         driver.get("https://demo.nopcommerce.com/cell-phones")
         avaitor(driver, elements.viewedProd)
         val product = driver.findElement(By.className(elements.viewedProd))
-        val viewedProduct = product.findElement(By.partialLinkText(HTC)).getText()
+        val viewedProduct = product.findElement(By.partialLinkText(HTC)).text
         Assert.assertEquals(viewedProduct, HTC)
         driver.quit()
     }
