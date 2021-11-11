@@ -1,22 +1,18 @@
+package Tests
+
 import org.awaitility.Awaitility.await
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.chrome.ChromeDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 import org.openqa.selenium.support.ui.WebDriverWait
 import org.testng.Assert
 import java.lang.Thread.sleep
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.concurrent.TimeUnit
-import kotlin.time.Duration
-import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -98,7 +94,7 @@ class FirstTest {
         driver.get("https://demo.nopcommerce.com/cell-phones")
         awaitWithText(driver, HTC)
         var product = driver.findElement(By.partialLinkText(HTC))
-        product = product.findElement(By.ByXPath("./../.."))
+        product = product.findElement(By.ByXPath("src"))
         product.findElement(By.className(elements.toCart)).click()
         avaitor(driver, elements.notifCont)
 
@@ -122,7 +118,7 @@ class FirstTest {
         driver.get("https://demo.nopcommerce.com/desktops")
         avaitor(driver, elements.productBox)
         var product = driver.findElement(By.partialLinkText(PC))
-        product = product.findElement(By.ByXPath("./../.."))
+        product = product.findElement(By.ByXPath("src"))
         product.findElement(By.className(elements.toCart)).click()
         sleep(3000)
         driver.findElement(By.id(elements.toCartProd)).click()
@@ -149,7 +145,7 @@ class FirstTest {
 
         fun preiceCollectror(selector: String, price:BigDecimal?): BigDecimal {
             var product = driver.findElement(By.partialLinkText(selector))
-            product = product.findElement(By.ByXPath("./../.."))
+            product = product.findElement(By.ByXPath("src"))
             var productPrice = product.findElement(By.className(elements.price)).getText().split("$")
             var productPriceInt = productPrice[1].toBigDecimal()
             product.findElement(By.className(elements.toCart)).click()

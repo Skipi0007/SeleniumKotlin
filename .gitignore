@@ -3,5 +3,6 @@
 target/
 test-output
 /.gradle/
+.gradle/
 /build/
 out
