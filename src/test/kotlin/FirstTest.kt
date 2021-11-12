@@ -14,6 +14,7 @@ import org.testng.Assert
 import java.lang.Thread.sleep
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -39,7 +40,7 @@ class FirstTest {
         val close: String = "close"
     }
 
-    fun avaitor(driver:WebDriver = ChromeDriver(), selector: String){
+    fun awaitor(driver:WebDriver = ChromeDriver(), selector: String){
         await().atMost(50, TimeUnit.SECONDS).until(driver.findElement(By.className(selector))::isDisplayed)
     }
     fun awaitWithText(driver:WebDriver = ChromeDriver(), selector: String){
@@ -50,14 +51,19 @@ class FirstTest {
         ChromeDriver().findElement(By.className(selector)).click()
     }
 
+    fun driver() : WebDriver {
+        System.setProperty("webdriver.chrome.driver", """/Users/antonvinogradov/Documents/Repos/SeleniumKotlin/src/main/kotlin/drivers/chromedriver""")
+        var driver: WebDriver = ChromeDriver()
+        driver.manage().window().size = Dimension(1280, 720)
+        return driver
+    }
+
+    var driver = driver()
+
 
     @Test
     fun firstTest() {
-        System.setProperty("webdriver.chrome.driver", """/Users/antonvinogradov/Documents/Repos/SeleniumKotlin/src/main/kotlin/drivers/chromedriver""")
-        val driver: WebDriver = ChromeDriver()
-        driver.manage().window().size = Dimension(1280, 720)
         val category: Array<String> = arrayOf("Computers", "Electronics", "Apparel")
-
         val subCatComputers: Array<String> = arrayOf("Desktops",  "Notebooks", "Software")
         val subCatElectronics: Array<String> = arrayOf("Camera & photo",  "Cell phones", "Others")
         val subCatApparel: Array<String> = arrayOf("Shoes",  "Clothing", "Accessories")
@@ -70,7 +76,7 @@ class FirstTest {
 
                 var element = driver.findElement(By.className(elements.mainMenu))
                 element.findElement(By.partialLinkText(categoryName[mainCounter])).click()
-                avaitor(driver, elements.category)
+                awaitor(driver, elements.category)
 
                 element = driver.findElement(By.className(elements.category))
                 var counter = 0
@@ -90,9 +96,6 @@ class FirstTest {
 
     @Test
     fun secondTest() {
-        System.setProperty("webdriver.chrome.driver", """/Users/antonvinogradov/Documents/Repos/SeleniumKotlin/src/main/kotlin/drivers/chromedriver""")
-        val driver: WebDriver = ChromeDriver()
-        driver.manage().window().size = Dimension(1280, 720)
         val HTC:String = "HTC One Mini Blue"
 
         driver.get("https://demo.nopcommerce.com/cell-phones")
@@ -100,10 +103,10 @@ class FirstTest {
         var product = driver.findElement(By.partialLinkText(HTC))
         product = product.findElement(By.ByXPath("./../.."))
         product.findElement(By.className(elements.toCart)).click()
-        avaitor(driver, elements.notifCont)
+        awaitor(driver, elements.notifCont)
 
         driver.get("https://demo.nopcommerce.com/cart")
-        avaitor(driver, elements.product)
+        awaitor(driver, elements.product)
         val cartProduct = driver.findElement(By.className(elements.product)).getText()
         Assert.assertEquals(cartProduct, "HTC One Mini Blue")
         System.out.println(cartProduct+" eq HTC One Mini Blue")
@@ -112,21 +115,17 @@ class FirstTest {
 
     @Test
     fun thirdTest() {
-        System.setProperty("webdriver.chrome.driver", """/Users/antonvinogradov/Documents/Repos/SeleniumKotlin/src/main/kotlin/drivers/chromedriver""")
-        val driver: WebDriver = ChromeDriver()
-        driver.manage().window().size = Dimension(1280, 720)
-        val wait = WebDriverWait(driver, 5000)
         val PC:String = "Build your own computer"
         val errorsTexts: Array<String> = arrayOf("Please select RAM", "Please select HDD")
 
         driver.get("https://demo.nopcommerce.com/desktops")
-        avaitor(driver, elements.productBox)
+        awaitor(driver, elements.productBox)
         var product = driver.findElement(By.partialLinkText(PC))
         product = product.findElement(By.ByXPath("./../.."))
         product.findElement(By.className(elements.toCart)).click()
         sleep(3000)
         driver.findElement(By.id(elements.toCartProd)).click()
-        avaitor(driver, elements.notifCont)
+        awaitor(driver, elements.notifCont)
         var notify = driver.findElement(By.className(elements.notify))
         val firstTextError = notify.findElement(By.ByXPath(".//p[1]")).getText()
         val secondTextError = notify.findElement(By.ByXPath(".//p[2]")).getText()
@@ -139,10 +138,6 @@ class FirstTest {
 
     @Test
     fun fourthTest() {
-        System.setProperty("webdriver.chrome.driver", """/Users/antonvinogradov/Documents/Repos/SeleniumKotlin/src/main/kotlin/drivers/chromedriver""")
-        val driver: WebDriver = ChromeDriver()
-        driver.manage().window().size = Dimension(1280, 720)
-        val wait = WebDriverWait(driver, 5000)
         val HTC:String = "HTC One Mini Blue"
         val secondHTC:String = "HTC One M8 Android L 5.0 Lollipop"
         var sumTotal:BigDecimal? = null
@@ -153,7 +148,7 @@ class FirstTest {
             var productPrice = product.findElement(By.className(elements.price)).getText().split("$")
             var productPriceInt = productPrice[1].toBigDecimal()
             product.findElement(By.className(elements.toCart)).click()
-            avaitor(driver, elements.notifCont)
+            awaitor(driver, elements.notifCont)
             product = driver.findElement(By.className(elements.notify))
             product.findElement(By.className(elements.close)).click()
 
@@ -165,14 +160,14 @@ class FirstTest {
         }
 
         driver.get("https://demo.nopcommerce.com/cell-phones")
-        avaitor(driver, elements.productBox)
+        awaitor(driver, elements.productBox)
         sumTotal=preiceCollectror(HTC, sumTotal)
         sumTotal=preiceCollectror(secondHTC, sumTotal)
 
         driver.get("https://demo.nopcommerce.com/cart")
         driver.findElement(By.partialLinkText(HTC)).isDisplayed
         driver.findElement(By.partialLinkText(secondHTC)).isDisplayed
-        avaitor(driver, elements.totalPrice)
+        awaitor(driver, elements.totalPrice)
         var webSumm = driver.findElement(By.className(elements.totalPrice)).getText().split("$")
         var webSummInt = webSumm[1].toBigDecimal()
         Assert.assertEquals(webSummInt, sumTotal)
@@ -196,18 +191,13 @@ class FirstTest {
 
     @Test
     fun fifthTest() {
-
-        System.setProperty("webdriver.chrome.driver", """/Users/antonvinogradov/Documents/Repos/SeleniumKotlin/src/main/kotlin/drivers/chromedriver""")
-        val driver: WebDriver = ChromeDriver()
-        driver.manage().window().size = Dimension(1280, 720)
-        val wait = WebDriverWait(driver, 5000)
         val HTC:String = "HTC One Mini Blue"
 
         driver.get("https://demo.nopcommerce.com/cell-phones")
         driver.findElement(By.partialLinkText(HTC)).click()
-        avaitor(driver, elements.prodTitle)
+        awaitor(driver, elements.prodTitle)
         driver.get("https://demo.nopcommerce.com/cell-phones")
-        avaitor(driver, elements.viewedProd)
+        awaitor(driver, elements.viewedProd)
         val product = driver.findElement(By.className(elements.viewedProd))
         val viewedProduct = product.findElement(By.partialLinkText(HTC)).getText()
         Assert.assertEquals(viewedProduct, HTC)
